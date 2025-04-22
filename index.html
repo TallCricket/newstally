@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NewsTally</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans h-screen overflow-hidden transition-all">
+
+  <!-- TOP NAVIGATION BAR (Mobile/Tablet only) -->
+  <nav class="lg:hidden fixed top-0 left-0 right-0 bg-white border-b shadow-sm z-10 flex items-center justify-between px-4 py-3">
+    <a href="index.html" class="text-xl font-bold hover:text-blue-600 transition-colors">📰 NewsTally</a>
+    <button id="searchToggle" class="text-gray-600 hover:text-blue-600 focus:outline-none" aria-label="Toggle search">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35m0 0a7.5 7.5 0 111.415-1.414L21 21z" />
+      </svg>
+    </button>
+  </nav>
+
+  <!-- SEARCH INPUT (Mobile/Tablet only, hidden by default) -->
+  <div id="mobileSearchContainer" class="lg:hidden hidden fixed top-14 left-0 right-0 bg-white border-b px-4 py-2 z-10">
+    <div class="flex items-center gap-2">
+      <input id="mobileSearchInput" type="text" placeholder="Search news..." aria-label="Search news" class="flex-1 border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
+      <button onclick="filterNews()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-400">Search</button>
+    </div>
+  </div>
+
+  <div class="flex h-full">
+
+    <!-- LEFT FIXED SIDEBAR (Laptop/Desktop only) -->
+    <aside class="hidden lg:flex lg:flex-col w-60 bg-white border-r p-4 space-y-4" id="sidebar">
+      <div class="flex justify-between items-center">
+        <a href="index.html" class="text-2xl font-bold hover:text-blue-600 transition-colors">📰 NewsTally</a>
+      </div>
+      <ul id="sidebarCategories" class="flex flex-col gap-3 text-lg" role="navigation" aria-label="News Categories">
+        <!-- Sidebar categories will come here -->
+      </ul>
+    </aside>
+
+    <!-- CENTER SCROLLABLE CONTENT -->
+    <main class="flex-1 overflow-y-auto px-4 sm:px-8 pt-20 lg:pt-6 pb-6 ml-0 lg:ml-4">
+      <div id="newsHeading" class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-extrabold text-center lg:text-left">Latest News</h1>
+      </div>
+
+      <!-- Search + Sort (Laptop/Desktop only) -->
+      <div id="searchSortContainer" class="hidden lg:flex flex-col lg:flex-row gap-4 mb-6 items-center">
+        <input id="searchInput" type="text" placeholder="Search news..." aria-label="Search news" class="w-full lg:w-auto flex-1 border px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        <select id="sortBy" aria-label="Sort news" class="border px-3 py-2 rounded-lg">
+          <option value="latest">📅 Latest First</option>
+          <option value="oldest">🕒 Oldest First</option>
+        </select>
+        <button onclick="filterNews()" class="bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-600 focus:ring-2 focus:ring-blue-400">Search</button>
+      </div>
+
+      <!-- Error Message -->
+      <div id="errorMessage" class="text-center text-red-500 hidden"></div>
+
+      <!-- News Cards -->
+      <div id="newsContainer" class="space-y-6"></div>
+    </main>
+  </div>
+
+  <!-- BOTTOM NAVIGATION (Mobile/Tablet only) -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg flex justify-around py-2" id="bottomNav" role="navigation" aria-label="Mobile News Categories">
+    <!-- Bottom navigation categories will come here -->
+  </nav>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop" class="back-to-top bg-blue-500 text-white p-3 rounded-full hover:bg-blue-600 focus:ring-2 focus:ring-blue-400" aria-label="Back to top">
+    ↑
+  </button>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+
+    // Back to Top functionality
+    window.addEventListener('scroll', () => {
+      const backToTop = document.getElementById('backToTop');
+      backToTop.style.display = window.scrollY > 300 ? 'block' : 'none';
+    });
+
+    document.getElementById('backToTop').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+
+  <script defer src="script.js"></script>
+</body>
+</html>
