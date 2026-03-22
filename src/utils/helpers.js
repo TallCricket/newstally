@@ -24,14 +24,17 @@ export function formatCount(n) {
   return String(n || 0)
 }
 
+import React from 'react'
+
 export function processText(text) {
   if (!text) return ''
   // Split on hashtags and mentions
   const mentionRegex = new RegExp('(#\\w+|@\\w+)')
   const parts = text.split(mentionRegex)
   return parts.map((part, i) => {
-    if (part.startsWith('#')) return <span key={i} style={{ color: '#065fd4', fontWeight: 600 }}>{part}</span>
-    if (part.startsWith('@')) return <span key={i} style={{ color: '#065fd4', fontWeight: 600 }}>{part}</span>
+    if (part.startsWith('#') || part.startsWith('@')) {
+      return React.createElement('span', { key: i, style: { color: '#065fd4', fontWeight: 600 } }, part)
+    }
     return part
   })
 }
